@@ -1,3 +1,7 @@
+# BMI Calculator
+# Author: Powell A. Mims
+# This program calculates your BMI with English Units
+
 METERS_PER_FOOT = 0.3048;
 KG_PER_POUND = 0.453952;
 
