@@ -12,5 +12,6 @@ height *= METERS_PER_FOOT;
 weight *= KG_PER_POUND;
 
 bmi = weight / height ** 2;
+bmi = round(bmi, 2);
 
 print(f"Your BMI is {bmi}");
