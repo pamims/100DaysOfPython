@@ -12,5 +12,5 @@ num_people = int(num_people);
 tip_percent = float(tip_percent) / 100;
 cost = float(cost)
 cost_per_person = round(cost * (1 + tip_percent) / num_people, 2);
-
+cost_per_person = "{:.2f}".format(cost_per_person);
 print(f"Each person should pay ${cost_per_person}.");
