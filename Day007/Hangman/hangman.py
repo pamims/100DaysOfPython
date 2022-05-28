@@ -1,4 +1,10 @@
 import random;
+
+def draw_output(correct_letters, incorrect_letters):
+    print(f"The word so far: {correct_letters}");
+    print(f"Incorrect guesses: {incorrect_letters}");
+    return;
+
 ALLOWED_FAILURES = 6;
 words = ["buffalo", "parrot", "squirrel", "hedgehog"];
 word = random.choice(words);
@@ -8,6 +14,7 @@ incorrect_letters = [];
 
 letters_remaining = len(word);
 while letters_remaining > 0 and len(incorrect_letters) < ALLOWED_FAILURES:
+    draw_output(correct_letters, incorrect_letters);
     guess = input("Guess a letter: ").lower();
     if guess in correct_letters or guess in incorrect_letters:
         print("That letter has already been used.");
@@ -27,9 +34,6 @@ while letters_remaining > 0 and len(incorrect_letters) < ALLOWED_FAILURES:
     
     if not is_in_word:
         incorrect_letters.append(guess);
-
-    print(f"The word so far: {correct_letters}");
-    print(f"Incorrect guesses: {incorrect_letters}");
 
 print("Game Over");
 if len(incorrect_letters) < ALLOWED_FAILURES:
