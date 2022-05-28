@@ -93,6 +93,9 @@ while not game_is_over:
     elif not guess.isalpha():
         print("That is not a letter.");
         continue;
+    elif len(guess) > 1:
+        print("That was too many letters.");
+        continue;
 
     # Update game state
     i = 0;
