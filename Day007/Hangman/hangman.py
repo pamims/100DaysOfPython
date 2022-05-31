@@ -4,65 +4,9 @@
 
 
 import random;
+from words import WORDS;
+from ascii_imgs import STAGES;
 
-# 'Constant' values
-WORDS = ["buffalo", "parrot", "squirrel", "hedgehog"];
-STAGES = ['''
-  +---+
-  |   |
-  O   |
- /|\  |
- / \  |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
- /|\  |
- /    |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
- /|\  |
-      |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
- /|   |
-      |
-      |
-=========''', '''
-  +---+
-  |   |
-  O   |
-  |   |
-      |
-      |
-=========
-''', '''
-  +---+
-  |   |
-  O   |
-      |
-      |
-      |
-=========
-''', '''
-  +---+
-  |   |
-      |
-      |
-      |
-      |
-=========
-''']
 ALLOWED_FAILURES = len(STAGES) - 1;
 
 # Helper functions
