@@ -18,6 +18,7 @@ def get_grade(score):
 student_scores = {
     "Piddles" : -5,
     "Kevin" : 5,
+    "Stacy" : 116,
     "Bob" : 15,
     "Tim" : 25,
     "Kelly" : 35,
@@ -37,5 +38,15 @@ for student in student_scores:
     grade = get_grade(student_scores[student]);
     student_grades[student] = grade;
 
+highest_score = 0;
+best_student = "none";
+for student in student_scores:
+    score = student_scores[student];
+    if score > highest_score:
+        highest_score = score;
+        best_student = student;
+
+
 print(student_scores);
 print(student_grades);
+print(f"best student was {best_student}.");
