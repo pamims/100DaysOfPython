@@ -6,6 +6,7 @@ from calc_operations import operations
 from ascii_imgs import calc_art
 
 def is_number(value):
+    """Determine if the string input can convert to a float"""
     try:
         float(value);
         return True;
@@ -13,6 +14,7 @@ def is_number(value):
         return False;
         
 def get_operation():
+    """Get input for selecting an operation"""
     operation = "";
     while operation not in operations:
         print("These are the available operations: +, -, *, /");
@@ -20,12 +22,14 @@ def get_operation():
     return operation;
 
 def get_operand():
+    """Get number input for an operand"""
     operand = "";
     while not is_number(operand):
         operand = input("Enter a valid number: ");
     return float(operand);
 
 def check_if_finished():
+    """Checks to see if user is done using the calculator"""
     yes_no = { "y" : False, "n" : True };
     do_again = "";
     while do_again not in yes_no:
