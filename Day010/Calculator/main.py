@@ -25,18 +25,33 @@ def get_operand():
         operand = input("Enter a valid number: ");
     return float(operand);
 
+def check_if_finished():
+    yes_no = { "y" : False, "n" : True };
+    do_again = "";
+    while do_again not in yes_no:
+        do_again = input("Perform another calculation (Y, n)? ").lower();
+    return yes_no[do_again];
+
 
 # Start
 print(calc_art);
 print("\nWelcome to the Calculator!\n");
 
-# Get input
-operand1 = get_operand();
-operation = get_operation();
-operand2 = get_operand();
+# Program loop
+is_finished = False;
+while not is_finished:
+    # Get input
+    operand1 = get_operand();
+    operation = get_operation();
+    operand2 = get_operand();
 
-function = operations[operation];
-result = function(operand1, operand2);
+    # Find result
+    function = operations[operation];
+    result = function(operand1, operand2);
+    print(f"Result: {result}");
 
-print(f"Result: {result}");
-
+    # Check if complete
+    is_finished = check_if_finished();
+    
+# Complete
+print("\nThank you for using the Calculator!\nGoodbye.\n");
