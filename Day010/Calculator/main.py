@@ -54,6 +54,7 @@ while not is_finished:
     print(f"Result: {result}");
 
     # Check if complete
+    print("");
     is_finished = check_if_finished();
     
 # Complete
