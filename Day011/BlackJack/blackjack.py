@@ -21,6 +21,7 @@ MIN_CARDS_LEFT = 52;
 # Game Variables
 DECK = [];
 HAND = [[]];
+COINS = {"stack" : 200, "bet" : [0]};
 
 
 # Helper functions
@@ -50,11 +51,18 @@ def get_hand_value(hand_index = 0):
 
 def split(hand_index = 0):
     """Splits a hand into two smaller hands"""
+    show_coins();
     HAND.append([HAND[hand_index].pop()]);
+    COINS["bet"].append(0);
+    place_bet(-1);
+    print("");
+    show_coins();
     return;
 
 def can_split(hand_index = 0):
     """Returns True if a split is allowed"""
+    if COINS["stack"] <= 0:
+        return False;
     value1 = CARD_VALUES[HAND[hand_index][0]];
     value2 = CARD_VALUES[HAND[hand_index][1]];
     # You can split non identical 10 value cards.
@@ -81,8 +89,10 @@ def can_hit(hand_index = 0):
     """Returns true if hit is allowed"""
     # Split Aces receive only one card.
     if is_split() and HAND[hand_index][0] == "A":
+        print("Split aces are only allowed one card.");
         return False;
-    if get_hand_value(HAND[hand_index]) >= 21:
+    if get_hand_value(hand_index) >= 21:
+        print("Your hand is already worth 21.")
         return False;
     return True;
 
@@ -105,6 +115,7 @@ def show_cards():
             hand_string += f" {card}";
         hand_string += f" : {get_hand_value(i)}"
         print(hand_string);
+    print("");
     return;
 
 def will_split(hand_index):
@@ -132,22 +143,122 @@ def deal_cards():
             deal_cards();
     return;
 
+def is_valid_bet(value):
+    if not value.isnumeric():
+        print("Number must be a positive integer.");
+        return False;
+    value = int(value);
+    if value <= 0 or value > COINS["stack"]:
+        print("Cannot bet more than you have or less than 1.");
+        return False;
+    return True;
 
-# Game phases
+def place_bet(hand_index = 0):
+    bet = "";
+    valid = False;
+    while not valid:
+        bet = input(f"How much to bet? ");
+        valid = is_valid_bet(bet);
+    bet = int(bet);
+    COINS["stack"] -= bet;
+    COINS["bet"][hand_index] = bet;
+
+def show_coins():
+    print(f"Coins: {COINS['stack']}");
+    if COINS["bet"][0] != 0:
+        num_bets = len(COINS["bet"]);
+        for i in range(0, num_bets):
+            if num_bets > 1:
+                hand_string = f"Hand{i + 1} ";
+            else:
+                hand_string = "";
+            print(f"{hand_string}Bet: {COINS['bet'][i]}");
+    return;
+
+def can_double(hand_index = 0):
+    if not can_hit(hand_index):
+        return False;
+    if COINS["bet"][hand_index] > COINS["stack"]:
+        print("Not enough coins left.");
+        return False;
+    return True;
+
+# Player decisions
+def player_hit(hand_index = 0):
+    yes_no = {"y" : True, "n" : False}
+    hit_again = True;
+    while hit_again:
+        hit(hand_index);
+        show_cards();
+        if get_hand_value(hand_index) < 21:
+            decision = "";
+            while decision not in yes_no:
+                decision = input("Would you like to hit again (Y/n)? ").lower();
+            hit_again = yes_no[decision];
+        else:
+            hit_again = False;
+    return;
+
+def player_double(hand_index = 0):
+    COINS["stack"] -= COINS["bet"][hand_index];
+    COINS["bet"][hand_index] *= 2;
+    hit(hand_index);
+    show_coins();
+    show_cards();
+    return;
+
+def player_stand(hand_index = 0):
+    return;
+
+def player_surrender(hand_index = 0):
+    coins = round(COINS["bet"][hand_index] / 2);
+    COINS["stack"] += coins;
+    COINS["bet"][hand_index] = 0;
+    show_coins();
+    show_cards();
+    return;
+
+PLAYER_DECISIONS = {
+    "hit" : player_hit,
+    "double" : player_double,
+    "stand" : player_stand,
+    "surrender" : player_surrender
+}
+ 
+# Main game functions
 def begin_round():
     print("Beginning new round.");
     clear_hand();
-    print(str(len(DECK)));
     if len(DECK) < MIN_CARDS_LEFT:
         set_deck();
-        print(str(len(DECK)));
-        print("The deck has been shuffled");
+        print("The deck has been shuffled.");
+    show_coins();
+    place_bet();
+    print("");
+    show_coins();
     deal_cards();
     return;
 
 def get_player_decision():
-    print("Player, make a decision.");
-    print("Not yet implemented...");
+    num_hands = len(HAND);
+    for i in range(0, num_hands):
+        if num_hands > 1:
+            hand_string = f" for Hand{i + 1}";
+        else:
+            hand_string = "";
+        print(f"Player, make a decision{hand_string}.");
+        decision = "";
+        while decision not in PLAYER_DECISIONS:
+            decision = input("hit, double, stand, surrender: ")
+            if decision == "hit" and not can_hit(i):
+                print(f"Not allowed to hit.");
+                decision = "";
+            elif decision == "double" and not can_double(i):
+                print("Not allowed to double down.");
+                decision = "";
+
+        func = PLAYER_DECISIONS[decision];
+        func(i);
     return;
 
 def dealer_plays():
@@ -157,8 +268,10 @@ def dealer_plays():
 
 def end_round():
     print("End round.");
-    print("Not yet implemented...");
+    coins = sum(COINS["bet"]);
+    COINS["bet"] = [0];
+    COINS["stack"] += coins;
+    clear_hand();
     return;
-
     
 # You can hit and double down split hands.
