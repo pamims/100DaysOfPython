@@ -18,6 +18,7 @@ while not game_over:
     dealer_plays();
     end_round();
     game_over = get_game_over();
+    print("");
 
 
 print("\nThank you for playing BlackJack!");
