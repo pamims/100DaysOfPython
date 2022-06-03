@@ -13,13 +13,13 @@ def is_number(value):
     except ValueError:
         return False;
         
-def get_operation():
+def get_operation_function():
     """Get input for selecting an operation"""
     operation = "";
     while operation not in operations:
         print("These are the available operations: +, -, *, /");
         operation = input("Select an operation: ");
-    return operation;
+    return operations[operation];
 
 def get_operand():
     """Get number input for an operand"""
@@ -46,12 +46,11 @@ is_finished = False;
 while not is_finished:
     # Get input
     operand1 = get_operand();
-    operation = get_operation();
+    operation_function = get_operation_function();
     operand2 = get_operand();
 
     # Find result
-    function = operations[operation];
-    result = function(operand1, operand2);
+    result = operation_function(operand1, operand2);
     print(f"Result: {result}");
 
     # Check if complete
