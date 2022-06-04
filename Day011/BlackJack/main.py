@@ -1,6 +1,8 @@
 from ascii_art import blackjack_art
 from blackjack import begin_round, get_player_decision, dealer_plays, end_round
 
+
+print(blackjack_art);
 print("\nWelcome to BlackJack!\n");
 
 def get_game_over():
